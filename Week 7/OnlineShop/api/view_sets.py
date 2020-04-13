@@ -1,7 +1,7 @@
 from rest_framework import mixins, viewsets
 
-from api.models import CategoryList, ProductList, MyUser
-from api.serializer import CategoryListSerializer, ProductListSerializer, MyUserSerializer
+from .models import CategoryList, ProductList, MyUser
+from .serializer import CategoryListSerializer, ProductListSerializer, MyUserSerializer
 
 
 class CategoryListViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
