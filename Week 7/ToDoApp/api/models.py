@@ -15,7 +15,7 @@ class TaskList(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    due_on = models.DateTimeField(auto_now=False)
+    due_on = models.DateTimeField(auto_now=True)
     status = models.CharField(choices=STATUS, max_length=200, default="to do")
     created_by = models.ForeignKey(MyUser, on_delete=models.CASCADE, default=1)
 

@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework_jwt.views import obtain_jwt_token
 
-from api.views_viewsets import TaskListListViewSet, UserViewSet
+from .views_viewsets import TaskListListViewSet, UserViewSet
 from .views import TaskListListAPIView, TaskListDetailAPIView
 
 # urlpatterns = [
