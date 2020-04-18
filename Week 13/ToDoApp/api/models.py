@@ -1,11 +1,23 @@
+import logging
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from utils.validators import validate_file_size, validate_extension
 
+logger = logging.getLogger(__name__)
+
 
 class MyUser(AbstractUser):
-    pass
+    def _try_create_profile_for_user(self, created):
+        if created:
+            Profile.objects.get_or_create(user=self)
+
+    def save(self, *args, **kwargs):
+        logger.info(f'MyUser before saving')
+        created = self.id is None
+        super(MyUser, self).save(*args, **kwargs)
+        self._try_create_profile_for_user(created)
+        logger.info(f'MyUser after saving')
 
 
 class Profile(models.Model):
