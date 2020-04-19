@@ -37,7 +37,7 @@ class TaskList(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     due_on = models.DateTimeField(auto_now=True)
     status = models.CharField(choices=STATUS, max_length=200, default="to do")
-    created_by = models.ForeignKey(MyUser, on_delete=models.CASCADE, default=1)
+    created_by = models.ForeignKey(MyUser, on_delete=models.CASCADE, default=1, related_name="tasklists")
     photo = models.ImageField(upload_to='taskList_photos',
                               validators=[validate_file_size,
                                           validate_extension],

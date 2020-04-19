@@ -6,12 +6,6 @@ from .models import TaskList, MyUser
 logger = logging.getLogger(__name__)
 
 
-class MyUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MyUser
-        fields = ('username', 'email')
-
-
 class TaskListModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = TaskList
@@ -27,9 +21,20 @@ class TaskListModelSerializer(serializers.ModelSerializer):
         return attrs
 
 
+class MyUserSerializer(serializers.ModelSerializer):
+    tasklists = TaskListModelSerializer(many=True)
+    tasklists_count = serializers.IntegerField(default=0)
+
+    class Meta:
+        model = MyUser
+        fields = ('username', 'email', 'tasklists', 'tasklists_count')
+
+
 class TaskListSerializer(serializers.Serializer):
     name = serializers.CharField(required=True)
     created_by = MyUserSerializer(read_only=True)
+    created_by_username = serializers.CharField(source='created_by.username')
+
     description = serializers.CharField()
 
     def create(self, validated_data):
@@ -41,3 +46,4 @@ class TaskListSerializer(serializers.Serializer):
         instance.name = validated_data.get('name', instance.name)
         instance.save()
         return instance
+
