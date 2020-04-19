@@ -1,3 +1,4 @@
+from django.http import Http404
 from rest_framework import mixins, generics, viewsets
 from rest_framework.permissions import IsAuthenticated
 
@@ -17,7 +18,6 @@ class CategoryListAPIView(mixins.ListModelMixin, mixins.CreateModelMixin, generi
         return self.create(request, *args, **kwargs)
 
 
-
 class CategoryDetailAPIView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
                             generics.GenericAPIView):
     queryset = CategoryList.objects.all()
@@ -28,3 +28,15 @@ class CategoryDetailAPIView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
 
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
+
+
+class ProductsAPIView(generics.ListCreateAPIView, generics.CreateAPIView):
+    serializer_class = ProductListSerializer
+
+    def get_queryset(self):
+        try:
+            category = CategoryList.objects.get(id=self.kwargs.get('pk'))
+        except CategoryList.DoesNotExist:
+            raise Http404
+        queryset = category.products.all()
+        return queryset

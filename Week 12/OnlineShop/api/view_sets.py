@@ -23,7 +23,8 @@ class CategoryListViewSet(viewsets.ModelViewSet):
         logger.critical(f'Category object created, name: {serializer.instance.name}')
 
 
-class ProductListViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class ProductListViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
+                         mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = ProductList.objects.all()
     serializer_class = ProductListSerializer
     parser_classes = (FormParser, MultiPartParser, JSONParser)
